@@ -2,31 +2,30 @@
 
 
 /* initialise la position de The Guy dans le labyrinthe et renvoie un vector<int> représentant ses coordonnées */
-vector<int> initializeThePositionGuy(deque<deque<string>>& maze)
+Coordinates initializeThePositionGuy(Maze& maze)
 {
-    vector<int> theGuyInitialPosition = { VISION_RANGE, 2 };
+    Coordinates theGuyInitialPosition = { VISION_RANGE, VISION_RANGE };
 
-    maze[VISION_RANGE][VISION_RANGE] = THE_GUY;
+    maze[VISION_RANGE][VISION_RANGE]->isTheGuyHere = true;
 
     return theGuyInitialPosition;
 }
 
-/* initialisation de labyrinthe visible par The Guy */
-deque<deque<string>> initializeMaze()
-{
-    deque<deque<string>> initialMaze;
-    deque<string> newColumn;
-    string newCell;
 
+/* initialisation du labyrinthe visible par The Guy */
+Maze initializeMaze()
+{
+    Maze initialMaze;
+    
     for (int x = 0; x < (2 * VISION_RANGE + 1); x++)
     {
+        std::deque<std::unique_ptr<Cell>> newColumn;
+
         for (int y = 0; y < (2 * VISION_RANGE + 1); y++)
         {
-            newCell = generateRandomCellContent();
-            newColumn.push_back(newCell);
+            newColumn.push_back(std::make_unique<Cell>(generateRandomCellContent(), false, false));
         }
-        initialMaze.push_back(newColumn);
-        newColumn.clear();
+        initialMaze.push_back(std::move(newColumn));
     }
 
     return initialMaze;

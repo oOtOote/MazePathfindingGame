@@ -1,5 +1,5 @@
-#ifndef MYENUMS_H
-#define MYENUMS_H
+#ifndef MYENUMS_HPP
+#define MYENUMS_HPP
 
 
 enum direction
@@ -10,4 +10,4 @@ enum direction
     LEFT
 };
 
-#endif
+#endif // !MYENUMS_HPP

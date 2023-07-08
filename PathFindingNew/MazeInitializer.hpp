@@ -1,16 +1,18 @@
-#ifndef MAZEINITIALIZER_H
-#define MAZEINITIALIZER_H
+#ifndef MAZEINITIALIZER_HPP
+#define MAZEINITIALIZER_HPP
 
 #include <iostream>
 #include <deque>
 #include <vector>
-#include "ConstantValues.hpp"
+#include <memory>
+#include "MyConstantValues.hpp"
 #include "CellGenerator.hpp"
+#include "MyStructs.hpp"
 
-using namespace std;
+using Maze = std::deque<std::deque<std::unique_ptr<Cell>>>;
+using Coordinates = std::vector<int>;
 
+Coordinates initializeThePositionGuy(Maze& maze);
+Maze initializeMaze();
 
-vector<int> initializeThePositionGuy(deque<deque<string>>& maze);
-deque<deque<string>> initializeMaze();
-
-#endif 
+#endif // !MAZEINITIALIZER_HPP

@@ -128,16 +128,18 @@
   </ItemDefinitionGroup>
   <ItemGroup>
     <ClCompile Include="CellGenerator.cpp" />
-    <ClCompile Include="ConstantValues.hpp" />
+    <ClCompile Include="MyConstantValues.hpp" />
     <ClCompile Include="GameManager.cpp" />
     <ClCompile Include="Main.cpp" />
     <ClCompile Include="MazeDisplayer.cpp" />
     <ClCompile Include="MazeInitializer.cpp" />
     <ClCompile Include="MovementManager.cpp" />
+    <ClCompile Include="MyStructs.hpp" />
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="CellGenerator.hpp" />
     <ClInclude Include="GameManager.hpp" />
+    <ClInclude Include="Main.hpp" />
     <ClInclude Include="MazeDisplayer.hpp" />
     <ClInclude Include="MazeInitializer.hpp" />
     <ClInclude Include="MovementManager.hpp" />

@@ -4,47 +4,53 @@
 /* marque la nouvelle position de the guy est colorée en rouge dans le labyrinthe et ses nouvelles coordonnées sont mis à jour dans le vector<int>"theGuyCoordinates"
 isNewLineAdded permet de savoir si une nouvelle ligne est ajouté. En effet, si une nouvelle ligne est ajoutée en haut du labyrinthe, tous les index sur l'axe des y seront décalés de 1.
 Et si une nouvelle ligne est ajoutée à gauche, tous les index sur l'axe des x seront décalés de 1 */
-void moveTheGuy(deque<deque<string>>& maze, vector<int>& theGuyCoordinates, direction theGuyDirection, bool isNewLineAdded) {
-
+void moveTheGuy(Maze& maze, Coordinates& theGuyCoordinates, direction theGuyDirection, bool isNewLineAdded)
+{
     switch (theGuyDirection)
     {
     case TOP:
         if (isNewLineAdded)
         {
-            maze[theGuyCoordinates[0]][theGuyCoordinates[1] + 1] = PATH;
-            maze[theGuyCoordinates[0]][theGuyCoordinates[1]] = THE_GUY;
+            maze[theGuyCoordinates[0]][theGuyCoordinates[1] + 1]->isTheGuyHere = false;
+            maze[theGuyCoordinates[0]][theGuyCoordinates[1] + 1]->isRunThrough = true;
+            maze[theGuyCoordinates[0]][theGuyCoordinates[1]]->isTheGuyHere = true;
         }
         else 
         {
-            maze[theGuyCoordinates[0]][theGuyCoordinates[1]] = PATH;
+            maze[theGuyCoordinates[0]][theGuyCoordinates[1]]->isTheGuyHere = false;
+            maze[theGuyCoordinates[0]][theGuyCoordinates[1]]->isRunThrough = true;
             theGuyCoordinates[1] --;
-            maze[theGuyCoordinates[0]][theGuyCoordinates[1]] = THE_GUY;
+            maze[theGuyCoordinates[0]][theGuyCoordinates[1]]->isTheGuyHere = true;
         }
         break;
 
     case RIGHT:
-        maze[theGuyCoordinates[0]][theGuyCoordinates[1]] = PATH;
+        maze[theGuyCoordinates[0]][theGuyCoordinates[1]]->isTheGuyHere = false;
+        maze[theGuyCoordinates[0]][theGuyCoordinates[1]]->isRunThrough = true;
         theGuyCoordinates[0]++;
-        maze[theGuyCoordinates[0]][theGuyCoordinates[1]] = THE_GUY;
+        maze[theGuyCoordinates[0]][theGuyCoordinates[1]]->isTheGuyHere = true;
         break;
 
     case BELOW:
-        maze[theGuyCoordinates[0]][theGuyCoordinates[1]] = PATH;
+        maze[theGuyCoordinates[0]][theGuyCoordinates[1]]->isTheGuyHere = false;
+        maze[theGuyCoordinates[0]][theGuyCoordinates[1]]->isRunThrough = true;
         theGuyCoordinates[1]++;
-        maze[theGuyCoordinates[0]][theGuyCoordinates[1]] = THE_GUY;
+        maze[theGuyCoordinates[0]][theGuyCoordinates[1]]->isTheGuyHere = true;
         break;
 
     case LEFT:
         if (isNewLineAdded)
         {
-            maze[theGuyCoordinates[0] + 1][theGuyCoordinates[1]] = PATH;
-            maze[theGuyCoordinates[0]][theGuyCoordinates[1]] = THE_GUY;
+            maze[theGuyCoordinates[0] + 1][theGuyCoordinates[1]]->isTheGuyHere = false;
+            maze[theGuyCoordinates[0] + 1][theGuyCoordinates[1]]->isRunThrough = true;
+            maze[theGuyCoordinates[0]][theGuyCoordinates[1]]->isTheGuyHere = true;
         }
         else 
         {
-            maze[theGuyCoordinates[0]][theGuyCoordinates[1]] = PATH;
+            maze[theGuyCoordinates[0]][theGuyCoordinates[1]]->isTheGuyHere = false;
+            maze[theGuyCoordinates[0]][theGuyCoordinates[1]]->isRunThrough = true;
             theGuyCoordinates[0] --;
-            maze[theGuyCoordinates[0]][theGuyCoordinates[1]] = THE_GUY;
+            maze[theGuyCoordinates[0]][theGuyCoordinates[1]]->isTheGuyHere = true;
         }
         break;
     }
@@ -53,7 +59,7 @@ void moveTheGuy(deque<deque<string>>& maze, vector<int>& theGuyCoordinates, dire
 
 
 /* permet de savoir si le mouvement de the guy implique le dévoilement d'une nouvelle partie du labyrinthe */
-bool checkIfNewLineShouldBeAdded(deque<deque<string>> maze, vector<int> theGuyCoordinates, direction moveDirection)
+bool checkIfNewLineShouldBeAdded(const Maze& maze, const Coordinates& theGuyCoordinates, direction moveDirection)
 {
     bool shouldLineBeAdded = false;
 
@@ -93,9 +99,9 @@ bool checkIfNewLineShouldBeAdded(deque<deque<string>> maze, vector<int> theGuyCo
 
 
 /* permet d'ajouter une nouvelle ligne au labyrinthe */
-void addNewLine(deque<deque<string>>& maze, direction newLinePosition)
+void addNewLine(Maze& maze, direction newLinePosition)
 {
-    deque<string> newLine;
+    std::deque<std::unique_ptr<Cell>> newLine;
     int mazeLength = maze.size();
     int mazeHeight = maze[0].size();
 
@@ -104,78 +110,45 @@ void addNewLine(deque<deque<string>>& maze, direction newLinePosition)
     case TOP:
         for (int x = 0; x < mazeLength; x++)
         {
-            maze[x].push_front(generateRandomCellContent());
+            maze[x].push_front(std::make_unique<Cell>(generateRandomCellContent(),false, false));
         };
         break;
 
     case RIGHT:
         for (int y = 0; y < mazeHeight; y++)
         {
-            newLine.push_back(generateRandomCellContent());
+            newLine.push_back(std::make_unique<Cell>(generateRandomCellContent(), false, false));
         }
-        maze.push_back(newLine);
+        maze.push_back(std::move(newLine));
         break;
 
     case BELOW:
         for (int x = 0; x < mazeLength; x++)
         {
-            maze[x].push_back(generateRandomCellContent());
+            maze[x].push_back(std::make_unique<Cell>(generateRandomCellContent(), false, false));
         };
         break;
 
     case LEFT:
         for (int y = 0; y < mazeHeight; y++)
         {
-            newLine.push_back(generateRandomCellContent());
+            newLine.push_back(std::make_unique<Cell>(generateRandomCellContent(), false, false));
         }
-        maze.push_front(newLine);
+        maze.push_front(std::move(newLine));
         break;
     }
 }
 
 
-
 /* sorte de "fonction mère" qui gère tous ce qui va se passer quand the guy va se déplacer */
-void manageTheGuyMovement(deque<deque<string>>& maze, vector<int>& theGuyCoordinates, direction moveDirection)
+void manageTheGuyMovement(Maze& maze, Coordinates& theGuyCoordinates, direction moveDirection)
 {
-    bool shouldNewLineBeAdded;
+    bool shouldNewLineBeAdded = checkIfNewLineShouldBeAdded(maze, theGuyCoordinates, moveDirection);
 
-    switch (moveDirection)
+    if (shouldNewLineBeAdded)
     {
-    case TOP:
-        shouldNewLineBeAdded = checkIfNewLineShouldBeAdded(maze, theGuyCoordinates, moveDirection); // on vérifie si une ligne doit être ajoutée
-        if (shouldNewLineBeAdded) 
-        {
-            addNewLine(maze, moveDirection); // on ajoute une ligne le cas échéant
-        }
-        moveTheGuy(maze, theGuyCoordinates, moveDirection, shouldNewLineBeAdded); // on déplace the guy dans le labyrinthe, on marque son ancienne position et on met à jour ses coordonnées
-        break;
-
-    case RIGHT:
-        shouldNewLineBeAdded = checkIfNewLineShouldBeAdded(maze, theGuyCoordinates, moveDirection);
-        if (shouldNewLineBeAdded) 
-        {
-            addNewLine(maze, moveDirection);
-        }
-        moveTheGuy(maze, theGuyCoordinates, moveDirection, shouldNewLineBeAdded);
-        break;
-
-    case BELOW:
-        shouldNewLineBeAdded = checkIfNewLineShouldBeAdded(maze, theGuyCoordinates, moveDirection);
-        if (shouldNewLineBeAdded) 
-        {
-            addNewLine(maze, moveDirection);
-        }
-        moveTheGuy(maze, theGuyCoordinates, moveDirection, shouldNewLineBeAdded);
-        break;
-
-    case LEFT:
-        shouldNewLineBeAdded = checkIfNewLineShouldBeAdded(maze, theGuyCoordinates, moveDirection);
-        if (shouldNewLineBeAdded) 
-        {
-            addNewLine(maze, moveDirection);
-        }
-        moveTheGuy(maze, theGuyCoordinates, moveDirection, shouldNewLineBeAdded);
-        break;
+        addNewLine(maze, moveDirection);
     }
+
+    moveTheGuy(maze, theGuyCoordinates, moveDirection, shouldNewLineBeAdded);
 }

@@ -2,10 +2,10 @@
 
 
 /* génère aléatoirement le contenu d'une cellule */
-string generateRandomCellContent()
+std::string generateRandomCellContent()
 {
     int randomNumber = rand() % 4; // va servir a générer un contenu aléatoire aux cellules
-    string newCellContent = WALL;
+    std::string newCellContent = WALL;
 
     switch (randomNumber) 
     {
@@ -27,7 +27,7 @@ string generateRandomCellContent()
 
     default:
         newCellContent = "error";
-        cout << "\nechec dans la generation du contenu de la cellule";
+        std::cout << "\nechec dans la generation du contenu de la cellule";
         break;
     }
 

@@ -1,5 +1,5 @@
-#ifndef CONSTANTVALUES_H
-#define CONSTANTVALUES_H
+#ifndef CONSTANTVALUES_HPP
+#define CONSTANTVALUES_HPP
 
 #include <windows.h>
 
@@ -13,4 +13,4 @@
 #define THE_GUY "\033[48;2;201;16;16m  \033[0m"
 #define PATH "\033[48;2;188;95;95m  \033[0m"
 
-#endif
+#endif // !CONSTANTVALUES_HPP

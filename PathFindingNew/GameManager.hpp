@@ -1,5 +1,5 @@
-#ifndef GAMEMANAGER_H
-#define GAMEMANAGER_H
+#ifndef GAMEMANAGER_HPP
+#define GAMEMANAGER_HPP
 
 #include <iostream>
 #include <string>
@@ -7,15 +7,17 @@
 #include <vector>
 #include <chrono>
 #include <thread>
-#include "MyEnums.hpp";
-#include "ConstantValues.hpp"
+#include <memory>
+#include "MyEnums.hpp"
+#include "MyConstantValues.hpp"
+#include "MyStructs.hpp"
 
-using namespace std;
-
+using Maze = std::deque<std::deque<std::unique_ptr<Cell>>>;
+using Coordinates = std::vector<int>;
 
 void startingGame();
-string askKeyboardEntry();
-direction interpretKeyboardEntry(string keyboardEntry);
-bool checkForWall(deque<deque<string>> maze, vector<int> theGuyCoordinates, direction theGuyDirection);
+std::string askKeyboardEntry();
+direction interpretKeyboardEntry(std::string keyboardEntry);
+bool checkForWall(const Maze& maze, const Coordinates theGuyCoordinates, direction theGuyDirection);
 
-#endif
+#endif //!GAMEMANAGER_HPP

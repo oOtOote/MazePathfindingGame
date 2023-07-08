@@ -1,19 +1,22 @@
-#ifndef MOVEMENTMANAGER_H
-#define MOVEMENTMANAGER_H
+#ifndef MOVEMENTMANAGER_HPP
+#define MOVEMENTMANAGER_HPP
 
 #include <iostream>
 #include <deque>
 #include <vector>
+#include <memory>
 #include "CellGenerator.hpp"
 #include "MyEnums.hpp"
-#include "ConstantValues.hpp"
+#include "MyStructs.hpp"
+#include "MyConstantValues.hpp"
 
-using namespace std;
+using Maze = std::deque<std::deque<std::unique_ptr<Cell>>>;
+using Coordinates = std::vector<int>;
 
 
-void moveTheGuy(deque<deque<string>>& maze, vector<int>& theGuyCoordinates, direction theGuyDirection, bool isNewLineAdded);
-bool checkIfNewLineShouldBeAdded(deque<deque<string>> maze, vector<int> theGuyCoordinates, direction moveDirection);
-void addNewLine(deque<deque<string>>& maze, direction newLinePosition);
-void manageTheGuyMovement(deque<deque<string>>& maze, vector<int>& theGuyCoordinates, direction moveDirection);
+void moveTheGuy(Maze& maze, Coordinates& theGuyCoordinates, direction theGuyDirection, bool isNewLineAdded);
+bool checkIfNewLineShouldBeAdded(const Maze& maze, const Coordinates& theGuyCoordinates, direction moveDirection);
+void addNewLine(Maze& maze, direction newLinePosition);
+void manageTheGuyMovement(Maze& maze, Coordinates& theGuyCoordinates, direction moveDirection);
 
-#endif
+#endif // !MOVEMENTMANAGER_HPP

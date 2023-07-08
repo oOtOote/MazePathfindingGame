@@ -1,13 +1,4 @@
-#include "MazeDisplayer.hpp"
-#include "MazeInitializer.hpp"
-#include "CellGenerator.hpp" 
-#include "MovementManager.hpp"
-#include "GameManager.hpp"
-#include "ConstantValues.hpp"
-#include "MyEnums.hpp"
-
-using namespace std;
-
+#include "Main.hpp"
 
 /* fonction 'chef d'orchestre' du projet */
 int main()
@@ -16,16 +7,15 @@ int main()
 
     startingGame();
 
-    string keyboardEntry;
+    std::string keyboardEntry;
     direction theGuyDirection;
-    bool gameOngoing = true;
 
-    deque<deque<string>> maze = initializeMaze();
-    vector<int> theGuyCoordinates = initializeThePositionGuy(maze);
+    Maze maze = initializeMaze();
+    Coordinates theGuyCoordinates = initializeThePositionGuy(maze);
 
     displayMaze(maze);
 
-    while (gameOngoing) 
+    while (true) // chaque déplacement du personnage enclenche un tour de boucle
     {
         do
         {

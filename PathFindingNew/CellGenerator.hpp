@@ -1,12 +1,9 @@
-#ifndef CELLGENERATOR_H
-#define CELLGENERATOR_H
+#ifndef CELLGENERATOR_HPP
+#define CELLGENERATOR_HPP
 
 #include <iostream>
-#include "ConstantValues.hpp"
+#include "MyConstantValues.hpp"
 
-using namespace std;
+std::string generateRandomCellContent();
 
-
-string generateRandomCellContent();
-
-#endif
+#endif // !CELLGENERATOR_HPP
